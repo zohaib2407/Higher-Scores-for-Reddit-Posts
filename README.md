@@ -99,6 +99,13 @@ For some godforsaken reason, PySpark also wants the features to be in a single c
 
 3. **Creating an evaluation function for statistical models**<br>
 
+### Statistical Modeling 
+
+1. **Logistic Regression**<br>
+2. **NaiveBayes Classifier**<br>
+Created the NaiveBayes Model, using a smoothing of  100  in an attempt to offset the lack of multiple records by all authors.
+4. **Random Forest Classifier**<br>
+
 
 
 
