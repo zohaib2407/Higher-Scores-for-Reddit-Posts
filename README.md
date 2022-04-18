@@ -50,6 +50,44 @@ Some Parquet benefits include:
 1. Fast queries that can fetch specific column values without reading full row data
 2. Highly efficient column-wise compression
 
+## Data Cleaning and Exploration
+
+We have sued different methodologies to clean the data and bring it into a concise format for further exploration and modelling. Only the columns of interest to determine the influence on score have been included in the modelling. Casting has been used to convert the various columns to valid formats. When posts are deleted on Reddit, their author names are marked under "[deleted]". This will be construed as a common poster across almost every subreddit, which we want to avoid. While coding the data from the JSON file to CSV, we coded these as null values.
+This leads to us arriving at 28 million records. Let's choose subreddits with at least 353,518 subscribers - that is, around the top 20% of all subreddits in the data.
+
+We have then checked to validate the quantile score and further filtered for the minimum subscriber count. This brings the record count to under 6 million, which is a significant amount. Next, we checked the number of non-null columns in the data and change the columns that are to some other value.
+
+The columns with limited number of non-null values making them less useful for modelling have been dropped. The next step is to start cleaning columns. The data types of certain columns have been changed for further cleaning the data.
+
+1.	Score primarily varies from 3 to around 230,000, with over 90% of the data being under 371.
+2.	Subreddit subscribes are significantly higher in magnitude, with a median value of 91,000.
+3.	Crossposts are largely 0, even to the 99%ile range.
+4.	Comment interactions are above 4 only beyond the 50% mark.
+5.	Awards received is strongly tied to the score of the post (higher scores get higher awards, especially at the top, and are likely cases of data leakage.
+6.	The ads_ui flag is practically irrelevant.
+7.	All posts have the thumbnail flag as True, so it is also not helpful in getting noticed.
+8.	Almost 80% of posts have some form of Media Embedding.
+9.	The title length averages at 38 characters (in terms of median).
+
+The total_awards_recieved is, as observed earlier, highly correlated (0.56) to the score, and is a clear case of data leakage.score and num_crossposts are also correlated (0.56), however, they drive each other, and is not as clear a case of data leakage and can thus still be included in the model.score is loosely tied to num_comments (0.13) and has a similar reasoning as num_crossposts.There is a general negative correlation all "positive" measures of popularity (subscriber count, is_video, is_self, title_length etc.) with the adult-content flag, over_18, but does not have any linear relationship to score.
+
+Adding additional time-based measures<br>
+Functions are designed to get specific periods such as the weekday, or hour of the data into a new column from the datetimefield.
+
+![image](https://user-images.githubusercontent.com/35283246/163796366-b4270f20-e09e-4674-8107-cc739db216ac.png) ![image](https://user-images.githubusercontent.com/35283246/163796387-8f6562e5-5a34-4419-9a48-6cd3338c02f4.png)
+
+![image](https://user-images.githubusercontent.com/35283246/163796406-81b5d35c-b649-49e1-aa0e-5eb1d4f269cc.png)
+While it may be easy to conclude that mean score increases by title length, there are far fewer titles with very high title length. To avoid misleading images, a plot for title_length values less than 100 is in order.
+
+![image](https://user-images.githubusercontent.com/35283246/163796431-b0f8267a-d814-447e-8211-98b5622450e2.png)
+As can be seen, this view paints a different picture - the score is higher on average for lower title counts.
+
+
+
+
+
+
+
 
 
 
