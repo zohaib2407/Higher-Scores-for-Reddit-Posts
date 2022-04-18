@@ -88,14 +88,16 @@ Based on the values above, the bins for the score can be created. The final outp
 
 ## Modelling Using spark.MLib
 
-#### Preparing Data for Ingestion
+### Preparing Data for Ingestion
 Spark's MLib is absolutely sparse on documentation. It cannot handle string data, and so strings have to be "transformed" into numeric values. Reference for the following steps:
 
-**StringIndexer**<br>
+1. **StringIndexer**<br>
 PySpark has a feature called StringIndexer, which encodes the string into numeric values. The reverse can also be performed via IndexToString.
 
-**VectorAssembler**<br>
+2. **VectorAssembler**<br>
 For some godforsaken reason, PySpark also wants the features to be in a single column, stored as a vector of features in each individual row. This is achieved through the following code:
+
+3. **Creating an evaluation function for statistical models**<br>
 
 
 
