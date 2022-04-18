@@ -82,6 +82,21 @@ While it may be easy to conclude that mean score increases by title length, ther
 ![image](https://user-images.githubusercontent.com/35283246/163796431-b0f8267a-d814-447e-8211-98b5622450e2.png)
 As can be seen, this view paints a different picture - the score is higher on average for lower title counts.
 
+From the above analyses, treating score as a categorical variable will not yield satisfactory results - the score itself varies widely, with a median of 22, and a range between 3 and 230,000. What can then be done is to create a model for the data that crosses a certain threshold - let's say, the top 50% of posts, which have a score of 22, and then bucket the score into specific groups.
+
+Based on the values above, the bins for the score can be created. The final output is saved to disk to reload as PySpark DataFrame.
+
+## Modelling Using spark.MLib
+
+#### Preparing Data for Ingestion
+Spark's MLib is absolutely sparse on documentation. It cannot handle string data, and so strings have to be "transformed" into numeric values. Reference for the following steps:
+
+**StringIndexer**<br>
+PySpark has a feature called StringIndexer, which encodes the string into numeric values. The reverse can also be performed via IndexToString.
+
+**VectorAssembler**<br>
+For some godforsaken reason, PySpark also wants the features to be in a single column, stored as a vector of features in each individual row. This is achieved through the following code:
+
 
 
 
